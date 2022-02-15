@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gallery</title>
+    <link rel="stylesheet" href="./styles/style.css">
+    <script defer src="./scripts/gallery.js"></script>
+    <script defer src="./scripts/authentication.js"></script>
+</head>
+<body>
+  <header class="header">
+    <div class="header__container _container">
+      <div class="header__inner">
+        <h1 class="header__title">Gallery</h1>
+        <button class="header__login-button _button" type="button">Log In</button>
+      </div>
+    </div>
+  </header>
+  <main class="main">
+    <section class="gallery">
+      <div class="gallery__container _container">
+        <div class="gallery__inner">
+          <div class="gallery__photos">
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <div class="pop-up">
+    <div class="pop-up__form-container">
+      <button class="pop-up__close-button" type="button">x</button>
+      <form class="login-form">
+        <label class="_label" for="login-form__email-input">Email</label>
+        <input class="login-form__email-input _input" id="login-form__email-input" type="text" required> 
+        <label class="_label" for="login-form__password-input _label">Password</label>
+        <input class="login-form__password-input _input" id="login-form__password-input" type="password" required>
+        <button class="login-form__submit-button _button" type="submit">Log In</button>
+      </form>
+    </div>
+  </div>
+</body>
+</html>
