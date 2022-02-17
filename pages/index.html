@@ -13,7 +13,6 @@
     <div class="header__container _container">
       <div class="header__inner">
         <h1 class="header__title">Gallery</h1>
-        <button class="header__login-button _button" type="button">Log In</button>
       </div>
     </div>
   </header>
@@ -23,9 +22,25 @@
         <div class="gallery__inner">
           <div class="gallery__photos">
           </div>
+          <div class="gallery__error">
+            <p class="gallery__error-message"></p>
+          </div>
+          <hr class="gallery__divider">
+          <nav class="gallery__pages">
+            <a href="" class="gallery__page-link active">1</a>
+            <a href="" class="gallery__page-link">2</a>
+            <a href="" class="gallery__page-link">3</a>
+            <a href="" class="gallery__page-link">4</a>
+            <a href="" class="gallery__page-link">5</a>
+          </nav>
         </div>
       </div>
     </section>
   </main>
+  <template class="gallery__template">
+    <figure class="gallery__picture-wrapper">
+      <img class="gallery__img" src="" alt="">
+    </figure>
+  </template>
 </body>
 </html>
