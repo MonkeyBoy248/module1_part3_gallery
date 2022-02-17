@@ -3,7 +3,11 @@ const emailInput = loginForm.elements.email;
 const passwordInput = loginForm.elements.password;
 const submitButton = loginForm.elements.submit;
 const submitErrorContainer = loginForm.querySelector('.login-form__submit-error-message');
-const url = 'https://hjdjs55gol.execute-api.us-east-1.amazonaws.com/api/login';
+const authenticationUrl = 'https://hjdjs55gol.execute-api.us-east-1.amazonaws.com/api/login';
+const currentUrl = new URL(window.location.href);
+const galleryUrl = new URL(`${currentUrl.href.slice(0, currentUrl.href.lastIndexOf('/'))}/index.html`);
+console.log(galleryUrl);
+const currentPage = currentUrl.searchParams.get('currentPage');
 
 function validateField (field, pattern, text) {
   const targetErrorContainer = loginForm.querySelector(`.login-form__${field.name}-error-message`);
@@ -37,14 +41,22 @@ async function sendFormData (url) {
   
     const data = await response.json();
     console.log(data);
-    return data;
+
+    if ('token' in data) return data;
+
+    submitErrorContainer.textContent = `${data.errorMessage}`;
   } catch (err) {
-    submitErrorContainer.textContent = `${err.errorMessage}`;
+    console.log(err);
   }
 }
 
 function setToken (token) {
   localStorage.setItem('token', JSON.stringify(token));
+  localStorage.setItem('token_timestamp', JSON.stringify(Date.now()));
+}
+
+function getToken () {
+  return JSON.parse(localStorage.getItem('token'));
 }
 
 function deleteToken () {
@@ -67,16 +79,34 @@ passwordInput.addEventListener('change', () => {
 
 loginForm.addEventListener('submit', (e) => {
   e.preventDefault();
-  sendFormData(url)
-  .then(token => setToken(token))
-  .then(setTimeout(deleteToken, 600000));
+  sendFormData(authenticationUrl)
+  .then(data => {
+    if (data) {
+      setToken(data)
+    }
+  })
+  .then(() => {
+    if (getToken()) {
+      if (!currentUrl.searchParams.get('currentPage')) {
+        window.location.href = (`${galleryUrl}?page=1`)
+      } else {
+        window.location.href = (`${galleryUrl}?page=${currentPage}`)
+      }
+    }
+  }
+  )
+  
   emailInput.value = '';
   passwordInput.value = '';
+  
 })
 
 loginForm.addEventListener('focusin', () => {
   submitErrorContainer.textContent = '';
 })
+
+
+
 
 
 
