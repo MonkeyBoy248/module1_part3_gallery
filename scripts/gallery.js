@@ -48,7 +48,7 @@ function setNewUrl (params) {
 }
 
 function deleteToken () {
-  if (Date.now() - JSON.parse(localStorage.getItem('token_timestamp')) >= 20000) {
+  if (Date.now() - JSON.parse(localStorage.getItem('token_timestamp')) >= 600000) {
     localStorage.removeItem('token');
     localStorage.removeItem('token_timestamp');
   }
