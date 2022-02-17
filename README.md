@@ -18,15 +18,18 @@ In progress
 ## Usage ##
 
 1. You have to log in. After filling the fields in click log in button to get your token
+
 ![Log in form](./assets/login_form.png)
+
 2. You can navigate through pages using this simple links bar
+
 ![Gallery](./assets/gallery.png)
+
 3. Enjoy!
 
 ## Authors and contacts ##
 
-```name: Kirill Temnyi
-email: [kirik201100@gmail.com](mailto:kirik201100@gmail.com)
-```
+``name``: Kirill Temnyi
+``email``: [kirik201100@gmail.com](mailto:kirik201100@gmail.com)
 
 
