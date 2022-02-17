@@ -88,9 +88,9 @@ loginForm.addEventListener('submit', (e) => {
   .then(() => {
     if (getToken()) {
       if (!currentUrl.searchParams.get('currentPage')) {
-        window.location.replace = (`${galleryUrl}?page=1`)
+        window.location.replace(`${galleryUrl}?page=1`)
       } else {
-        window.location.replace = (`${galleryUrl}?page=${currentPage}`)
+        window.location.replace(`${galleryUrl}?page=${currentPage}`)
       }
     }
   }
