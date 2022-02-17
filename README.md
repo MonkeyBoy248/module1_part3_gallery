@@ -29,7 +29,8 @@ In progress
 
 ## Authors and contacts ##
 
-``name``: Kirill Temnyi
+``name``: Kirill Temnyi  
+
 ``email``: [kirik201100@gmail.com](mailto:kirik201100@gmail.com)
 
 
