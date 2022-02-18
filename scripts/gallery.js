@@ -47,7 +47,7 @@ function createPictureTemplate (pictures) {
 }
 
 function setNewUrl (params) {
-  return window.location.origin + window.location.pathname + `?page=${params}`;
+  window.location = window.location.origin + window.location.pathname + `?page=${params}`;
 }
 
 function deleteToken () {
@@ -106,7 +106,7 @@ pagesLinksContainer.addEventListener('click', (e) => {
     currentUrl.searchParams.set('page', e.target.textContent);
     
     getPicturesData(`${galleryServerUrl}?page=${currentUrl.searchParams.get('page')}`);
-    window.location = setNewUrl(e.target.textContent);
+    setNewUrl(e.target.textContent);
     
     currentActiveLink.classList.remove('active');
     e.target.classList.add('active');
