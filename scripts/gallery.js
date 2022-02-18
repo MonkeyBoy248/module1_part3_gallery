@@ -19,7 +19,6 @@ async function getPicturesData (url) {
     
       const data = await response.json();
       createPictureTemplate(data);
-      setNewUrl(data);
     } catch {
       showMessage(`There is no page with number ${url.charAt(url.length - 1)}. Please, enter a new value in the address bar`);
     }
@@ -48,8 +47,7 @@ function createPictureTemplate (pictures) {
 }
 
 function setNewUrl (params) {
-  const newUrl = new URL(`?page=${params.page}`, currentUrl);
-  history.pushState(null, null, newUrl);
+  return window.location.origin + window.location.pathname + `?page=${params}`;
 }
 
 function deleteToken () {
@@ -108,6 +106,8 @@ pagesLinksContainer.addEventListener('click', (e) => {
     currentUrl.searchParams.set('page', e.target.textContent);
     
     getPicturesData(`${galleryServerUrl}?page=${currentUrl.searchParams.get('page')}`);
+    window.location = setNewUrl(e.target.textContent);
+    
     currentActiveLink.classList.remove('active');
     e.target.classList.add('active');
 
