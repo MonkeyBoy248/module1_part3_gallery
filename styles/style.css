@@ -74,6 +74,7 @@ body {
   align-items: center;
   justify-content: center;
   padding: 30px 0;
+  position: relative;
 }
 
 .gallery__photos {
@@ -130,8 +131,45 @@ body {
   outline: 1px solid #000;
 }
 
+.gallery__error-pop-up {
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, .4);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+
+.gallery__error-pop-up.show {
+  display: flex;
+}
+
+body.block {
+  overflow: hidden;
+}
+
+.gallery__pop-up-container {
+  width: 500px;
+  height: 400px;
+  background-color: #f3f0ea;
+  border-radius: 20px;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.gallery__error {
+  text-align: center;
+  vertical-align: middle;
+}
+
 .gallery__error-message {
-  font-size: 18px;
-  color: #c41d1d;
+  font-size: 20px;
+  color: #000;
+  word-wrap: break-word;
 }
 
