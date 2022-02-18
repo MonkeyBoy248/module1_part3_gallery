@@ -2,31 +2,36 @@ const galleryPhotos = document.querySelector('.gallery__photos');
 const galleryTemplate = document.querySelector('.gallery__template');
 const pagesLinksContainer = document.querySelector('.gallery__pages');
 const galleryErrorMessage = document.querySelector('.gallery__error-message');
-const galleryUrl = 'https://hjdjs55gol.execute-api.us-east-1.amazonaws.com/api/gallery';
-const loginUrl = new URL('http://127.0.0.1:5500/pages/authentication.html');
+const galleryPopup = document.querySelector('.gallery__error-pop-up');
+const galleryServerUrl = 'https://hjdjs55gol.execute-api.us-east-1.amazonaws.com/api/gallery';
 const currentUrl = new URL(window.location.href);
-
+const loginUrl = new URL(`${currentUrl.href.slice(0, currentUrl.href.lastIndexOf('/'))}/authentication.html`);
 
 async function getPicturesData (url) {
-  try {
-    const response = await fetch(url, {
-      method: 'GET',
-      headers: {
-        Authorization: 'token',
-      },
-    })
-  
-    const data = await response.json();
-    createPictureTemplate(data);
-    setNewUrl(data);
-    galleryErrorMessage.textContent = '';
-  } catch {
-    galleryErrorMessage.textContent = 'Невозможно получить страницу с таким номером! Попробуйте выбрать другую страницу';
+  if (getToken()) {
+    try {
+      const response = await fetch(url, {
+        method: 'GET',
+        headers: {
+          Authorization: getToken().token,
+        },
+      })
+    
+      const data = await response.json();
+      createPictureTemplate(data);
+      setNewUrl(data);
+    } catch {
+      showMessage(`There is no page with number ${url.charAt(url.length - 1)}. Please, try another page`);
+    }
   }
 }
 
 function getToken () {
   return JSON.parse(localStorage.getItem('token'));
+}
+
+function getTokenTimestamp () {
+  return JSON.parse(localStorage.getItem('token_timestamp'));
 }
 
 function createPictureTemplate (pictures) {
@@ -48,23 +53,40 @@ function setNewUrl (params) {
 }
 
 function deleteToken () {
-  if (Date.now() - JSON.parse(localStorage.getItem('token_timestamp')) >= 600000) {
+  if (Date.now() - getTokenTimestamp() >= 600000) {
     localStorage.removeItem('token');
     localStorage.removeItem('token_timestamp');
   }
 }
 
-function redirectWhenExpires () {
+function showMessage (text) {
+  galleryPopup.classList.add('show');
+  galleryErrorMessage.textContent = '';
+  galleryErrorMessage.textContent = text;
+}
+
+function timer (timer) {
+  let time = setInterval(() => {
+    --timer;
+    if (timer <= 0) clearInterval(time);
+    showMessage(`Token validity time is expired. You will be redirected to authorization page in ${timer} seconds`);
+  }, 1000);
+}
+
+function redirectWhenExpires (delay) {
   if (!getToken()) {
-    window.location.replace(`${loginUrl}?currentPage=${currentUrl.searchParams.get('page')}`);
+    timer(delay / 1000);
+    setTimeout(() => {
+      window.location.replace(`${loginUrl}?currentPage=${currentUrl.searchParams.get('page')}`);
+    }, delay)
   }
 }
 
 document.addEventListener('DOMContentLoaded', () => {  
   if(!currentUrl.searchParams.get('page')) {
-    getPicturesData(`${galleryUrl}?page=1`);
+    getPicturesData(`${galleryServerUrl}?page=1`);
   }else {
-    getPicturesData(`${galleryUrl}?page=${currentUrl.searchParams.get('page')}`);
+    getPicturesData(`${galleryServerUrl}?page=${currentUrl.searchParams.get('page')}`);
   }
 
   const currentActiveLink = pagesLinksContainer.querySelector('.active');
@@ -76,7 +98,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  redirectWhenExpires();
+  redirectWhenExpires(5000);
 })
 
 pagesLinksContainer.addEventListener('click', (e) => {
@@ -85,18 +107,19 @@ pagesLinksContainer.addEventListener('click', (e) => {
   if (currentActiveLink !== e.target) {
     currentUrl.searchParams.set('page', e.target.textContent);
     
-    getPicturesData(`${galleryUrl}?page=${currentUrl.searchParams.get('page')}`);
+    getPicturesData(`${galleryServerUrl}?page=${currentUrl.searchParams.get('page')}`);
     currentActiveLink.classList.remove('active');
     e.target.classList.add('active');
 
-    redirectWhenExpires();
+    redirectWhenExpires(5000);
   }
 })
 
 setInterval(() => {
   deleteToken();
-  redirectWhenExpires();
+  redirectWhenExpires(5000);
 }, 300000)
+
 
 
 
