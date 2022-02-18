@@ -3,10 +3,9 @@ const emailInput = loginForm.elements.email;
 const passwordInput = loginForm.elements.password;
 const submitButton = loginForm.elements.submit;
 const submitErrorContainer = loginForm.querySelector('.login-form__submit-error-message');
-const authenticationUrl = 'https://hjdjs55gol.execute-api.us-east-1.amazonaws.com/api/login';
+const authenticationServerUrl = 'https://hjdjs55gol.execute-api.us-east-1.amazonaws.com/api/login';
 const currentUrl = new URL(window.location.href);
 const galleryUrl = new URL(`${currentUrl.href.slice(0, currentUrl.href.lastIndexOf('/'))}/index.html`);
-console.log(galleryUrl);
 const currentPage = currentUrl.searchParams.get('currentPage');
 
 function validateField (field, pattern, text) {
@@ -40,7 +39,6 @@ async function sendFormData (url) {
     })
   
     const data = await response.json();
-    console.log(data);
 
     if ('token' in data) return data;
 
@@ -59,10 +57,6 @@ function getToken () {
   return JSON.parse(localStorage.getItem('token'));
 }
 
-function deleteToken () {
-  localStorage.removeItem('token');
-}
-
 emailInput.addEventListener('input', () => {
   const message = 'Wrong email format. Please, try again';
   const pattern = /[\w\d-_]+@([\w_-]+\.)+[\w]+/;
@@ -79,7 +73,7 @@ passwordInput.addEventListener('change', () => {
 
 loginForm.addEventListener('submit', (e) => {
   e.preventDefault();
-  sendFormData(authenticationUrl)
+  sendFormData(authenticationServerUrl)
   .then(data => {
     if (data) {
       setToken(data)
@@ -98,7 +92,6 @@ loginForm.addEventListener('submit', (e) => {
   
   emailInput.value = '';
   passwordInput.value = '';
-  
 })
 
 loginForm.addEventListener('focusin', () => {
