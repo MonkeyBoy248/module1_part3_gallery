@@ -40,7 +40,7 @@ async function sendFormData (url) {
   
     const data = await response.json();
 
-    if ('token' in data) return data;
+    if (data.token) return data;
 
     submitErrorContainer.textContent = `${data.errorMessage}`;
   } catch (err) {

@@ -21,7 +21,7 @@ async function getPicturesData (url) {
       createPictureTemplate(data);
       setNewUrl(data);
     } catch {
-      showMessage(`There is no page with number ${url.charAt(url.length - 1)}. Please, try another page`);
+      showMessage(`There is no page with number ${url.charAt(url.length - 1)}. Please, enter a new value in the address bar`);
     }
   }
 }
@@ -73,7 +73,7 @@ function timer (timer) {
   }, 1000);
 }
 
-function redirectWhenExpires (delay) {
+function redirectWhenTokenExpires (delay) {
   if (!getToken()) {
     timer(delay / 1000);
     setTimeout(() => {
@@ -82,7 +82,7 @@ function redirectWhenExpires (delay) {
   }
 }
 
-document.addEventListener('DOMContentLoaded', () => {  
+document.addEventListener('DOMContentLoaded', () => { 
   if(!currentUrl.searchParams.get('page')) {
     getPicturesData(`${galleryServerUrl}?page=1`);
   }else {
@@ -98,7 +98,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  redirectWhenExpires(5000);
+  redirectWhenTokenExpires(5000);
 })
 
 pagesLinksContainer.addEventListener('click', (e) => {
@@ -111,14 +111,15 @@ pagesLinksContainer.addEventListener('click', (e) => {
     currentActiveLink.classList.remove('active');
     e.target.classList.add('active');
 
-    redirectWhenExpires(5000);
+    redirectWhenTokenExpires(5000);
   }
 })
 
 setInterval(() => {
   deleteToken();
-  redirectWhenExpires(5000);
+  redirectWhenTokenExpires(5000);
 }, 300000)
+
 
 
 
