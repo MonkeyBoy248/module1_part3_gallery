@@ -171,5 +171,14 @@ body.block {
   font-size: 20px;
   color: #000;
   word-wrap: break-word;
+  margin-top: 40px;
+}
+
+.gallery__notification-sign {
+  font-size: 24px;
+  border: 2px solid #000;
+  padding: 10px 20px;
+  text-align: center;
+  color: rgb(240, 150, 16);
 }
 
