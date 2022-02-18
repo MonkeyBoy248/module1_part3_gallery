@@ -16,11 +16,15 @@ function validateField (field, pattern, text) {
   field.classList.remove('invalid');
 
   if (field.value.length !== 0 && !pattern.test(field.value)) {
-    targetErrorContainer.textContent = `${text}`;
-    submitButton.disabled = true;
-    submitButton.classList.add('_disabled');
-    field.classList.add('invalid');
+    showErrorMessage(text, targetErrorContainer, field);
   }
+}
+
+function showErrorMessage (text, targetElement, field) {
+  targetElement.textContent = `${text}`;
+  submitButton.disabled = true;
+  submitButton.classList.add('_disabled');
+  field.classList.add('invalid');
 }
 
 async function sendFormData (url) {
