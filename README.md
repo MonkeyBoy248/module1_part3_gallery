@@ -15,6 +15,25 @@ In progress
 * CSS3
 * JavaScript
 
+## Project Structure ##
+
+```
+MODULE1_PART3_GALLERY
+|__assets
+|
+|__pages
+|      |__index.html
+|      |__authentication.html
+|
+|__scripts
+|       |__gallery.js
+|       |__authentication.js
+|
+|__styles
+        |__authentication.css
+        |__style.css
+```
+
 ## Usage ##
 
 1. You have to log in. After filling the fields in click log in button to get your token
