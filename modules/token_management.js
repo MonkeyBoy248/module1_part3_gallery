@@ -1,23 +1,21 @@
 const tokenKey = 'token';
-const tokenTimestampKey = 'token_timestamp';
 
 function getToken () {
   return JSON.parse(localStorage.getItem(tokenKey));
 }
 
 function getTokenTimestamp () {
-  return JSON.parse(localStorage.getItem(tokenTimestampKey));
+  return JSON.parse(localStorage.getItem(tokenKey));
 }
 
 function setToken (token) {
+  token.timestamp = Date.now();
   localStorage.setItem(tokenKey, JSON.stringify(token));
-  localStorage.setItem(tokenTimestampKey, JSON.stringify(Date.now()));
 }
 
 function deleteToken () {
-  if (Date.now() - getTokenTimestamp() >= 600000) {
+  if (Date.now() - getTokenTimestamp().timestamp >= 600000) {
     localStorage.removeItem(tokenKey);
-    localStorage.removeItem(tokenTimestampKey);
   }
 }
 
