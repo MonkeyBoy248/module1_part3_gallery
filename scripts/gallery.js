@@ -1,5 +1,5 @@
-import { getToken, getTokenTimestamp, deleteToken } from "../modules/token_management.js";
-import { galleryServerUrl, loginUrl } from "../modules/environment_variables.js";
+import { getToken, deleteToken } from "../modules/token_management.js";
+import { galleryServerUrl, loginUrl, currentUrl } from "../modules/environment_variables.js";
 import removeEventListeners from "../modules/event_listeners_management.js";
 
 const galleryPhotos = document.querySelector('.gallery__photos');
@@ -7,7 +7,6 @@ const galleryTemplate = document.querySelector('.gallery__template');
 const pagesLinksContainer = document.querySelector('.gallery__links-list');
 const galleryErrorMessage = document.querySelector('.gallery__error-message');
 const galleryPopup = document.querySelector('.gallery__error-pop-up');
-const currentUrl = new URL(window.location.href);
 const galleryEventsArray = [
   {target: document, type: 'DOMContentLoaded', handler: getCurrentPageImages},
   {target: pagesLinksContainer, type: 'click', handler: changeCurrentPage},

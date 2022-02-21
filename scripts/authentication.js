@@ -1,5 +1,5 @@
 import { getToken, setToken } from "../modules/token_management.js";
-import { authenticationServerUrl, galleryUrl } from "../modules/environment_variables.js";
+import { authenticationServerUrl, galleryUrl, currentUrl } from "../modules/environment_variables.js";
 import removeEventListeners from "../modules/event_listeners_management.js";
 
 const loginForm = document.forms.login;
@@ -7,7 +7,6 @@ const emailInput = loginForm.elements.email;
 const passwordInput = loginForm.elements.password;
 const submitButton = loginForm.elements.submit;
 const submitErrorContainer = loginForm.querySelector('.login-form__submit-error-message');
-const currentUrl = new URL(window.location.href);
 const currentPage = currentUrl.searchParams.get('currentPage');
 const authenticationEventsArray = [
   {target: emailInput, type: 'input', handler: validateEmailInput}, {target: passwordInput, type: 'change', handler: validatePasswordInput}, {target: loginForm, type: 'submit', handler: submitForm}, {target: loginForm, type: 'focusin', handler: resetErrorMessage}
