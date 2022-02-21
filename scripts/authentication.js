@@ -1,12 +1,17 @@
+import { getToken, setToken } from "../modules/token_management.js";
+import { authenticationServerUrl, galleryUrl, currentUrl } from "../modules/environment_variables.js";
+import removeEventListeners from "../modules/event_listeners_management.js";
+
 const loginForm = document.forms.login;
 const emailInput = loginForm.elements.email;
 const passwordInput = loginForm.elements.password;
 const submitButton = loginForm.elements.submit;
 const submitErrorContainer = loginForm.querySelector('.login-form__submit-error-message');
-const authenticationServerUrl = 'https://hjdjs55gol.execute-api.us-east-1.amazonaws.com/api/login';
-const currentUrl = new URL(window.location.href);
-const galleryUrl = new URL(`${currentUrl.href.slice(0, currentUrl.href.lastIndexOf('/'))}/index.html`);
 const currentPage = currentUrl.searchParams.get('currentPage');
+const authenticationEventsArray = [
+  {target: emailInput, type: 'input', handler: validateEmailInput}, {target: passwordInput, type: 'change', handler: validatePasswordInput}, {target: loginForm, type: 'submit', handler: submitForm}, {target: loginForm, type: 'focusin', handler: resetErrorMessage}
+];
+
 
 function validateField (field, pattern, text) {
   const targetErrorContainer = loginForm.querySelector(`.login-form__${field.name}-error-message`);
@@ -52,30 +57,21 @@ async function sendFormData (url) {
   }
 }
 
-function setToken (token) {
-  localStorage.setItem('token', JSON.stringify(token));
-  localStorage.setItem('token_timestamp', JSON.stringify(Date.now()));
-}
-
-function getToken () {
-  return JSON.parse(localStorage.getItem('token'));
-}
-
-emailInput.addEventListener('input', () => {
+function validateEmailInput () {
   const message = 'Wrong email format. Please, try again';
   const pattern = /[\w\d-_]+@([\w_-]+\.)+[\w]+/;
 
   validateField(emailInput, pattern, message);
-})
+}
 
-passwordInput.addEventListener('change', () => {
+function validatePasswordInput () {
   const message = 'Wrong password format. Please, try again';
   const pattern = /([a-zA-Z0-9]{8,})/;
 
   validateField(passwordInput, pattern, message);
-})
+}
 
-loginForm.addEventListener('submit', (e) => {
+function submitForm (e) {
   e.preventDefault();
   sendFormData(authenticationServerUrl)
   .then(data => {
@@ -85,6 +81,8 @@ loginForm.addEventListener('submit', (e) => {
   })
   .then(() => {
     if (getToken()) {
+      removeEventListeners(authenticationEventsArray);
+
       if (!currentUrl.searchParams.get('currentPage')) {
         window.location.replace(`${galleryUrl}?page=1`)
       } else {
@@ -96,11 +94,20 @@ loginForm.addEventListener('submit', (e) => {
   
   emailInput.value = '';
   passwordInput.value = '';
-})
+}
 
-loginForm.addEventListener('focusin', () => {
+function resetErrorMessage () {
   submitErrorContainer.textContent = '';
-})
+}
+
+emailInput.addEventListener('input', validateEmailInput);
+
+passwordInput.addEventListener('change', validatePasswordInput);
+
+loginForm.addEventListener('submit', submitForm);
+
+loginForm.addEventListener('focusin', resetErrorMessage);
+
 
 
 

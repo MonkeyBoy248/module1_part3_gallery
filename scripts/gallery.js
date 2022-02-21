@@ -1,11 +1,16 @@
+import { getToken, deleteToken } from "../modules/token_management.js";
+import { galleryServerUrl, loginUrl, currentUrl } from "../modules/environment_variables.js";
+import removeEventListeners from "../modules/event_listeners_management.js";
+
 const galleryPhotos = document.querySelector('.gallery__photos');
 const galleryTemplate = document.querySelector('.gallery__template');
 const pagesLinksContainer = document.querySelector('.gallery__links-list');
 const galleryErrorMessage = document.querySelector('.gallery__error-message');
 const galleryPopup = document.querySelector('.gallery__error-pop-up');
-const galleryServerUrl = 'https://hjdjs55gol.execute-api.us-east-1.amazonaws.com/api/gallery';
-const currentUrl = new URL(window.location.href);
-const loginUrl = new URL(`${currentUrl.href.slice(0, currentUrl.href.lastIndexOf('/'))}/authentication.html`);
+const galleryEventsArray = [
+  {target: document, type: 'DOMContentLoaded', handler: getCurrentPageImages},
+  {target: pagesLinksContainer, type: 'click', handler: changeCurrentPage},
+]
 
 async function getPicturesData (url) {
   if (getToken()) {
@@ -25,14 +30,6 @@ async function getPicturesData (url) {
   }
 }
 
-function getToken () {
-  return JSON.parse(localStorage.getItem('token'));
-}
-
-function getTokenTimestamp () {
-  return JSON.parse(localStorage.getItem('token_timestamp'));
-}
-
 function createPictureTemplate (pictures) {
   galleryPhotos.innerHTML = ''
 
@@ -50,20 +47,13 @@ function setNewUrl (params) {
   window.location = window.location.origin + window.location.pathname + `?page=${params}`;
 }
 
-function deleteToken () {
-  if (Date.now() - getTokenTimestamp() >= 600000) {
-    localStorage.removeItem('token');
-    localStorage.removeItem('token_timestamp');
-  }
-}
-
 function showMessage (text) {
   galleryPopup.classList.add('show');
   galleryErrorMessage.textContent = '';
   galleryErrorMessage.textContent = text;
 }
 
-function timer (timer) {
+function updateMessageBeforeRedirection (timer) {
   let time = setInterval(() => {
     --timer;
     if (timer <= 0) clearInterval(time);
@@ -73,14 +63,15 @@ function timer (timer) {
 
 function redirectWhenTokenExpires (delay) {
   if (!getToken()) {
-    timer(delay / 1000);
+    updateMessageBeforeRedirection(delay / 1000);
+    removeEventListeners(galleryEventsArray);
     setTimeout(() => {
       window.location.replace(`${loginUrl}?currentPage=${currentUrl.searchParams.get('page')}`);
     }, delay)
   }
 }
 
-document.addEventListener('DOMContentLoaded', () => { 
+function getCurrentPageImages () {
   if(!currentUrl.searchParams.get('page')) {
     getPicturesData(`${galleryServerUrl}?page=1`);
   }else {
@@ -99,9 +90,9 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   redirectWhenTokenExpires(5000);
-})
+}
 
-pagesLinksContainer.addEventListener('click', (e) => {
+function changeCurrentPage (e) {
   const currentActiveLink = pagesLinksContainer.querySelector('.active');
   e.preventDefault();
   const target = e.target.closest('li');
@@ -115,12 +106,16 @@ pagesLinksContainer.addEventListener('click', (e) => {
 
     redirectWhenTokenExpires(5000);
   }
-})
+}
+
+document.addEventListener('DOMContentLoaded', getCurrentPageImages);
+pagesLinksContainer.addEventListener('click', changeCurrentPage);
 
 setInterval(() => {
   deleteToken();
   redirectWhenTokenExpires(5000);
 }, 300000)
+
 
 
 

@@ -36,15 +36,21 @@ MODULE1_PART3_GALLERY
 
 ## Usage ##
 
-1. You have to log in. After filling the fields in click log in button to get your token
+1. Run `index.html` file. For proper operation you have to run local server (for example, if you use `VS Code` you can install `Live Server` extension)
+
+![Open with Live Server](./assets/live_server_hint.png)
+
+[Install Live Server](https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer)
+
+2. You have to log in. After filling the fields in click log in button to authorize
 
 ![Log in form](./assets/login_form.png)
 
-2. You can navigate through pages using this simple links bar
+3. You can navigate through pages using this simple links bar
 
 ![Gallery](./assets/gallery.png)
 
-3. Enjoy!
+4. Enjoy!
 
 ## Authors and contacts ##
 
