@@ -1,6 +1,6 @@
 const galleryPhotos = document.querySelector('.gallery__photos');
 const galleryTemplate = document.querySelector('.gallery__template');
-const pagesLinksContainer = document.querySelector('.gallery__pages');
+const pagesLinksContainer = document.querySelector('.gallery__links-list');
 const galleryErrorMessage = document.querySelector('.gallery__error-message');
 const galleryPopup = document.querySelector('.gallery__error-pop-up');
 const galleryServerUrl = 'https://hjdjs55gol.execute-api.us-east-1.amazonaws.com/api/gallery';
@@ -90,7 +90,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const currentActiveLink = pagesLinksContainer.querySelector('.active');
   
   for (let link of pagesLinksContainer.children) {
-    if (link.textContent == currentUrl.searchParams.get('page')) {
+    link.setAttribute('page-number', link.querySelector('a').textContent);
+
+    if (link.getAttribute('page-number') === currentUrl.searchParams.get('page')) {
       currentActiveLink.classList.remove('active');
       link.classList.add('active');
     }
@@ -102,11 +104,10 @@ document.addEventListener('DOMContentLoaded', () => {
 pagesLinksContainer.addEventListener('click', (e) => {
   const currentActiveLink = pagesLinksContainer.querySelector('.active');
   e.preventDefault();
+  console.log(e.target);
   if (currentActiveLink !== e.target) {
-    currentUrl.searchParams.set('page', e.target.textContent);
-    
-    getPicturesData(`${galleryServerUrl}?page=${currentUrl.searchParams.get('page')}`);
     setNewUrl(e.target.textContent);
+    getPicturesData(`${galleryServerUrl}?page=${currentUrl.searchParams.get('page')}`);
     
     currentActiveLink.classList.remove('active');
     e.target.classList.add('active');

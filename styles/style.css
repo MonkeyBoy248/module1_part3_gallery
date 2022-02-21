@@ -97,12 +97,6 @@ body {
   object-fit: cover;
 }
 
-.gallery__pages {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-}
-
 .gallery__divider {
   background-color: #000;
   width: 100%;
@@ -112,21 +106,31 @@ body {
   margin-bottom: 30px;
 }
 
+.gallery__links-list {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
 .gallery__page-link {
   text-decoration: none;
   color: #000;
   font-size: 18px;
-  cursor: pointer;
+}
+
+.gallery__link-item {
   transition: 0.3s ease-in-out;
   padding: 2px 8px;
   border-radius: 50%;
+  cursor: pointer;
 }
 
-.gallery__page-link.active {
+.gallery__link-item.active {
   outline: 1px solid #000;
 }
 
-.gallery__page-link:hover {
+.gallery__link-item:hover {
   opacity: 0.3;
   outline: 1px solid #000;
 }
