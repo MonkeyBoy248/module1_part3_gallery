@@ -104,13 +104,14 @@ document.addEventListener('DOMContentLoaded', () => {
 pagesLinksContainer.addEventListener('click', (e) => {
   const currentActiveLink = pagesLinksContainer.querySelector('.active');
   e.preventDefault();
-  console.log(e.target);
-  if (currentActiveLink !== e.target) {
-    setNewUrl(e.target.textContent);
+  const target = e.target.closest('li');
+
+  if (currentActiveLink !== target) {
+    setNewUrl(target.getAttribute('page-number'));
     getPicturesData(`${galleryServerUrl}?page=${currentUrl.searchParams.get('page')}`);
     
     currentActiveLink.classList.remove('active');
-    e.target.classList.add('active');
+    target.classList.add('active');
 
     redirectWhenTokenExpires(5000);
   }
