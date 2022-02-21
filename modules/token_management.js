@@ -2,7 +2,6 @@ const tokenKey = 'token';
 const tokenTimestampKey = 'token_timestamp';
 
 function getToken () {
-  console.log(tokenKey);
   return JSON.parse(localStorage.getItem(tokenKey));
 }
 
