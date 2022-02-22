@@ -5,7 +5,7 @@ function getToken () {
 }
 
 function getTokenTimestamp () {
-  return JSON.parse(localStorage.getItem(tokenKey));
+  return JSON.parse(localStorage.getItem(tokenKey)).timestamp;
 }
 
 function setToken (token) {
@@ -14,7 +14,7 @@ function setToken (token) {
 }
 
 function deleteToken () {
-  if (Date.now() - getTokenTimestamp().timestamp >= 600000) {
+  if (Date.now() - getTokenTimestamp() >= 600000) {
     localStorage.removeItem(tokenKey);
   }
 }
